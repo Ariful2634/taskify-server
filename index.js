@@ -60,7 +60,6 @@ async function run() {
           const uploadFolder = path.join(__dirname, 'uploads');
           const filesInUploadFolder = await fs.readdir(uploadFolder);
         
-        
           const getFile = filesInUploadFolder.map(file => path.extname(file));
 
           res.status(200).json({ getFile });
