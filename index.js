@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const multer  = require('multer')
+const fs = require('fs').promises;
 require('dotenv').config()
 const app = express()
 const path = require('path');
@@ -50,6 +51,21 @@ async function run() {
           }
           res.status(201).json({ filename: file.filename });
         } catch (error) {
+          res.status(500).json({ error: 'Internal Server Error' });
+        }
+      });
+
+      app.get('/getUploadFile', async (req, res) => {
+        try {
+          const uploadFolder = path.join(__dirname, 'uploads');
+          const filesInUploadFolder = await fs.readdir(uploadFolder);
+        
+        
+          const getFile = filesInUploadFolder.map(file => path.extname(file));
+
+          res.status(200).json({ getFile });
+        } catch (error) {
+          console.error('Error fetching uploaded files count:', error);
           res.status(500).json({ error: 'Internal Server Error' });
         }
       });
